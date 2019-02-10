@@ -1,0 +1,1 @@
+ssh -t cam@192.168.11.27 "tail -f /home/dwelo/logs/api.log" >> log.log
