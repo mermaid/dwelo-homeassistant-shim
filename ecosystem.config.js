@@ -2,7 +2,7 @@ module.exports = {
   "apps" : [{
     "name"        : "dwelo-shim",
     "script"      : "npm run start",
-    "watch"       : true,
+    // "watch"       : true,
     "log_file": "dwelo-shim.log",
     "env": {
       "NODE_ENV": "development"
