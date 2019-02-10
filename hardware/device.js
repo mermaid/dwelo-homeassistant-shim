@@ -23,10 +23,9 @@ module.exports = class Device {
         let ret = []
 
         for (let requestType of Object.keys(this.dweloHooks.get)) {
-            console.log(requestType)
-            console.log(dweloBaseUrl, this.dweloHooks.get[requestType]);
-            let uri = url.resolve(dweloBaseUrl, this.dweloHooks.get[requestType]).replace(new RegExp('\$\{id\}', 'g'), this.id);
-            ret.push(request(uri));
+            let base = dweloBaseUrl.replace(/\$\{id\}/g, this.id) 
+            let path = this.dweloHooks.get[requestType].replace(/\$\{id\}/g, this.id)
+            ret.push(request(url.resolve(base, path)))
         }
 
         return Promise.all(ret).catch(err => {
