@@ -36,11 +36,36 @@ module.exports = {
             }
         }
     },
+    lock: {
+        update: async (id, state) => {
+            let headers = {}
+
+            if (config.hass.password) {
+                headers['x-ha-access'] = config.hass.password
+            }
+
+            let switchState = state.lock == '255' ? 'turn_on' : 'turn_off'
+
+            console.log('lock: ', switchState)
+            try {
+                return await request.post({
+                    method: 'POST',
+                    uri: url.resolve(baseUrl, `/api/services/switch/${switchState}`),
+                    headers,
+                    body: {entity_id: `switch.dwelo_lock_${id}`},
+                    json: true
+                })
+            } catch (err) {
+                console.error(`failed to update lock ${id}`, err);
+            }
+        }
+    },
     generateConfig: (devices) => {
         deviceConfig = {}
 
         for (let id of Object.keys(devices)) {
-            if (devices[id].type == 'switch') {
+            let device = devices[id]
+            if (device.type == 'switch' || device.type == 'lock') {
                 if (!deviceConfig.switch) {
                     deviceConfig.switch = {
                         platform: 'command_line',
@@ -48,10 +73,31 @@ module.exports = {
                     }
                 }
 
-                deviceConfig.switch.switches[`dwelo_${id}`] = {
+                deviceConfig.switch.switches[`dwelo_${device.type == 'lock' ? 'lock_' : ''}${id}`] = {
                     command_on: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/command/binary/on/`,
                     command_off: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/command/binary/off/`,
-                    friendly_name: devices[id].name
+                    friendly_name: device.name
+                }
+            }
+            if (device.type == 'lock') {
+                if (!deviceConfig.lock) {
+                    deviceConfig.lock = [{
+                        platform: 'template',
+                        name: device.name,
+                        value_template: `{{ is_state('${`switch.dwelo_${device.type == 'lock' ? 'lock_' : ''}${id}`}', 'on') }}`,
+                        lock: {
+                            service: 'switch.turn_on',
+                            data: {
+                                'entity_id': `switch.dwelo_${device.type == 'lock' ? 'lock_' : ''}${id}`
+                            }
+                        },
+                        unlock: {
+                            service: 'switch.turn_off',
+                            data: {
+                                'entity_id': `switch.dwelo_${device.type == 'lock' ? 'lock_' : ''}${id}`
+                            }
+                        }
+                    }]
                 }
             }
         } 

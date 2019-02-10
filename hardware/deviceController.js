@@ -3,7 +3,7 @@ const url = require('url')
 const config = require('../config')
 const Device = require('./device')
 // const Thermostat = require('./thermostat')
-const supportedDevices = ['switch']
+const supportedDevices = ['switch', 'lock']
 let devices = {};
 
 async function fetchAllDevices() {
