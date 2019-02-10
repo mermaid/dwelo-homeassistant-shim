@@ -1,6 +1,8 @@
-const config = require('../config')
-const url = require('url');
 const request = require('request-promise');
+const url = require('url');
+const YAML = require('json-to-pretty-yaml');
+const deviceController = require('./deviceController');
+const config = require('../config')
 
 if (!config.hass || !config.hass.baseUrl) {
     console.log('Improprer config! Cannot find config.hass.baseUrl')
@@ -33,5 +35,27 @@ module.exports = {
                 console.error(`failed to update switch ${id}`, err);
             }
         }
+    },
+    generateConfig: (devices) => {
+        deviceConfig = {}
+
+        for (let id of Object.keys(devices)) {
+            if (devices[id].type == 'switch') {
+                if (!deviceConfig.switch) {
+                    deviceConfig.switch = {
+                        platform: 'command_line',
+                        switches: {}
+                    }
+                }
+
+                deviceConfig.switch.switches[`dwelo_${id}`] = {
+                    command_on: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/command/binary/on/`,
+                    command_off: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/command/binary/off/`,
+                    friendly_name: devices[id].name
+                }
+            }
+        } 
+
+        return YAML.stringify(deviceConfig)
     }
 }

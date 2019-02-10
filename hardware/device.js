@@ -8,9 +8,10 @@ const dweloBaseUrl = config.hooks.dwelo.baseUrl
 const mirrorBaseUrl = config.hooks.mirror.baseUrl
 
 module.exports = class Device {
-    constructor(id, type) {
+    constructor(id, type, name) {
         this.id = id
         this.type = type
+        this.name = name
         this.dweloHooks = config.hooks.dwelo[type]
         this.mirrorHooks = config.hooks.mirror[type]
         this.state = {};

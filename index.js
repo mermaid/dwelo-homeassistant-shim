@@ -6,9 +6,10 @@ const deviceController = require('./hardware/deviceController')
 
 app.use('/dwelo-proxy', proxy(config.dwelo.baseUrl))
 
-for(let id of Object.keys(config.devices)) {
-    deviceController.addDevice(id, config.devices[id])
-}
+let fetchAllDevicesInterval = setInterval(async function() {
+    await deviceController.fetchAllDevices()
+    clearInterval(fetchAllDevicesInterval)
+}, 20000)
 
 http.createServer(app).listen(config.port || 9090);
 

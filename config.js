@@ -1,6 +1,7 @@
  module.exports = {
     "port": "9090",
     "tailfile": "/home/dwelo/logs/api.log",
+    "baseUrl": "localhost",
 
     // the device types needs to match the type of the hooks below, 'lock', 'switch', 'thermostat'
     //TODO: I can maybe just use APIs to find out what all devices are on the network
@@ -13,7 +14,8 @@
     },
 
     "dwelo": {
-        "baseUrl": "http://localhost:5000"
+        "baseUrl": "http://localhost:5000",
+        "publicBaseUrl": "http://localhost:9001/"
     },
 
     "hass": {
