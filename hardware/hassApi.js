@@ -16,8 +16,8 @@ module.exports = {
         update: async (id, state) => {
             let headers = {}
 
-            if (config.hass.password) {
-                headers['x-ha-access'] = config.hass.password
+            if (config.hass.token) {
+                headers['x-ha-access'] = config.hass.token
             }
 
             let switchState = state.switchOn == 'on' ? 'turn_on' : 'turn_off'
@@ -40,8 +40,8 @@ module.exports = {
         update: async (id, state) => {
             let headers = {}
 
-            if (config.hass.password) {
-                headers['x-ha-access'] = config.hass.password
+            if (config.hass.token) {
+                headers['x-ha-access'] = config.hass.token
             }
 
             let switchState = state.lock == '255' ? 'turn_on' : 'turn_off'
