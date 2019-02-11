@@ -88,8 +88,8 @@ module.exports = {
                 }
 
                 deviceConfig.switch.switches[`dwelo_lock_${id}`] = {
-                    command_on: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/door/lock/open/`,
-                    command_off: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/door/lock/close/`,
+                    command_on: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/command/door/lock/close/`,
+                    command_off: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/command/door/lock/open/`,
                     friendly_name: device.name
                 }
 

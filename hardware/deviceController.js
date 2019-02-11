@@ -21,8 +21,9 @@ async function fetchAllDevices() {
     }
 }
 function addDevice(id, type, name) {
-    console.log('addDevice: ', arguments)
-    devices[id] = new Device(id, type, name)
+    if (!devices[id]) {
+        devices[id] = new Device(id, type, name)
+    }
     devices[id].triggerRefresh()
 }
 function getDevice(id) {
