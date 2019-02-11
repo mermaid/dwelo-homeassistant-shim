@@ -65,7 +65,7 @@ module.exports = {
 
         for (let id of Object.keys(devices)) {
             let device = devices[id]
-            if (device.type == 'switch' || device.type == 'lock') {
+            if (device.type == 'switch') {
                 if (!deviceConfig.switch) {
                     deviceConfig.switch = {
                         platform: 'command_line',
@@ -73,28 +73,41 @@ module.exports = {
                     }
                 }
 
-                deviceConfig.switch.switches[`dwelo_${device.type == 'lock' ? 'lock_' : ''}${id}`] = {
+                deviceConfig.switch.switches[`dwelo_${id}`] = {
                     command_on: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/command/binary/on/`,
                     command_off: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/command/binary/off/`,
                     friendly_name: device.name
                 }
             }
             if (device.type == 'lock') {
+                if (!deviceConfig.switch) {
+                    deviceConfig.switch = {
+                        platform: 'command_line',
+                        switches: {}
+                    }
+                }
+
+                deviceConfig.switch.switches[`dwelo_lock_${id}`] = {
+                    command_on: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/door/lock/open/`,
+                    command_off: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/door/lock/close/`,
+                    friendly_name: device.name
+                }
+
                 if (!deviceConfig.lock) {
                     deviceConfig.lock = [{
                         platform: 'template',
                         name: device.name,
-                        value_template: `{{ is_state('${`switch.dwelo_${device.type == 'lock' ? 'lock_' : ''}${id}`}', 'on') }}`,
+                        value_template: `{{ is_state('${`switch.dwelo_lock_${id}`}', 'on') }}`,
                         lock: {
                             service: 'switch.turn_on',
                             data: {
-                                'entity_id': `switch.dwelo_${device.type == 'lock' ? 'lock_' : ''}${id}`
+                                'entity_id': `switch.dwelo_lock_${id}`
                             }
                         },
                         unlock: {
                             service: 'switch.turn_off',
                             data: {
-                                'entity_id': `switch.dwelo_${device.type == 'lock' ? 'lock_' : ''}${id}`
+                                'entity_id': `switch.dwelo_lock_${id}`
                             }
                         }
                     }]
