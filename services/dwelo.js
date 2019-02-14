@@ -32,6 +32,7 @@ const urls = {
     }
 }
 const _ = require('lodash')
+const url = require('url')
 const request = require('request-promise')
 const Promise = require('bluebird')
 const config = require('../config/config')
@@ -39,11 +40,13 @@ const baseUrl = config.dwelo.baseUrl
 
 module.exports = {
     refresh: async device => {
-        let refresh = _.get(urls, `${device.type}.${refresh}`)
+        let refresh = _.get(urls, `${device.type}.refresh`)
         let ret = []
 
         for(let key of Object.keys(refresh)) {
-            ret.push(request(refresh[key]))
+            let refreshUrl = url.resolve(baseUrl, refresh[key].replace(/\$\{id\}/g, device.id))
+            console.log(refresh)
+            ret.push(request(refreshUrl))
         }
 
         return await Promise.all(ret)

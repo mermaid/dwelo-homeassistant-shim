@@ -80,6 +80,7 @@ module.exports = {
                 }
             }
             if (device.type == 'lock') {
+                let switchLockId = `dwelo_lock_${id}`
                 if (!deviceConfig.switch) {
                     deviceConfig.switch = {
                         platform: 'command_line',
@@ -87,27 +88,36 @@ module.exports = {
                     }
                 }
 
-                deviceConfig.switch.switches[`dwelo_lock_${id}`] = {
+                if (!deviceConfig.customize) {
+                    deviceConfig.customize = {}
+                }
+
+                deviceConfig.switch.switches[switchLockId] = {
                     command_on: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/command/door/lock/close/`,
                     command_off: `curl ${config.baseUrl}:${config.port}/dwelo-proxy/device/${id}/command/door/lock/open/`,
-                    friendly_name: device.name
+                    friendly_name: device.name,
+                }
+
+                deviceConfig.customize[`switch.${switchLockId}`] = {
+                    hidden: true,
+                    homebridge_hidden: true
                 }
 
                 if (!deviceConfig.lock) {
                     deviceConfig.lock = [{
                         platform: 'template',
                         name: device.name,
-                        value_template: `{{ is_state('${`switch.dwelo_lock_${id}`}', 'on') }}`,
+                        value_template: `{{ is_state('switch.${switchLockId}', 'on') }}`,
                         lock: {
                             service: 'switch.turn_on',
                             data: {
-                                'entity_id': `switch.dwelo_lock_${id}`
+                                'entity_id': `switch.${switchLockId}`
                             }
                         },
                         unlock: {
                             service: 'switch.turn_off',
                             data: {
-                                'entity_id': `switch.dwelo_lock_${id}`
+                                'entity_id': `switch.${switchLockId}`
                             }
                         }
                     }]
