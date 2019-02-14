@@ -1,7 +1,7 @@
 const app = require('express')()
 const http = require('http')
 const proxy = require('express-http-proxy')
-const config = require('./config')
+const config = require('./config/config')
 const deviceController = require('./hardware/deviceController')
 
 app.get('/refresh-devices', (req, res) => {

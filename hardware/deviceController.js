@@ -1,6 +1,6 @@
 const request = require('request-promise')
 const url = require('url')
-const config = require('../config')
+const config = require('../config/config')
 const Device = require('./device')
 // const Thermostat = require('./thermostat')
 const supportedDevices = ['switch']//, 'lock']

@@ -1,4 +1,4 @@
-const config = require('./config')
+const config = require('./config/config')
 const deviceController = require('./hardware/deviceController')
 const Tail = require('tail').Tail
 

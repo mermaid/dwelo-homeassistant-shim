@@ -1,8 +1,8 @@
 const request = require('request-promise');
 const url = require('url');
 const YAML = require('json-to-pretty-yaml');
-const deviceController = require('./deviceController');
-const config = require('../config')
+const deviceController = require('../hardware/deviceController');
+const config = require('../config/config')
 
 if (!config.hass || !config.hass.baseUrl) {
     console.log('Improprer config! Cannot find config.hass.baseUrl')

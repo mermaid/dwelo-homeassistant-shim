@@ -1,7 +1,7 @@
 (async function() {
-    const config = require('./config')
+    const config = require('./config/config')
     const deviceController = require('./hardware/deviceController')
-    const hassApi = require('./hardware/hassApi')
+    const hassApi = require('./services/hassApi')
 
     console.log(deviceController)
     

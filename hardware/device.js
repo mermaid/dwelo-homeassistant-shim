@@ -1,11 +1,11 @@
 const _ = require('lodash')
 const url = require('url')
 const request = require('request-promise')
-const config = require('../config')
-const hass = require('./hassApi')
+const config = require('../config/config')
+const hass = require('../services/hassApi')
 const Promise = require('bluebird')
-const dweloBaseUrl = config.hooks.dwelo.baseUrl
-const mirrorBaseUrl = config.hooks.mirror.baseUrl
+const remoteService = require(`../services${config.services.local}`)
+const dweloBaseUrl = config.dwelo.baseUrl
 
 module.exports = class Device {
     constructor(id, type, name) {
@@ -13,7 +13,6 @@ module.exports = class Device {
         this.type = type
         this.name = name
         this.dweloHooks = config.hooks.dwelo[type]
-        this.mirrorHooks = config.hooks.mirror[type]
         this.state = {};
         console.log(`creating device: ${type} ${id}`)
     }
@@ -24,8 +23,9 @@ module.exports = class Device {
         let ret = []
 
         for (let requestType of Object.keys(this.dweloHooks.get)) {
-            let base = dweloBaseUrl.replace(/\$\{id\}/g, this.id) 
+            let base = dweloBaseUrl.replace(/\$\{id\}/g, this.id)
             let path = this.dweloHooks.get[requestType].replace(/\$\{id\}/g, this.id)
+            remoteService.refresh(this)
             ret.push(request(url.resolve(base, path)))
         }
 
