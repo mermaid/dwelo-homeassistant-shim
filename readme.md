@@ -63,9 +63,9 @@ Useful dwelo files
   - a few files in this dir
   - `zipgateway.conf` has the z wave encryption key on it (for secure devices like locks)
 - db tables
-+----------------------+
+|----------------------|
 | Tables_in_dweloHub   |
-+----------------------+
+|----------------------|
 | Abilities            |
 | AccessCodeSlotStatus |
 | AccessCodes          |
@@ -91,5 +91,5 @@ Useful dwelo files
 | UserCommunityRoles   |
 | Users                |
 | alembic_version      |
-+----------------------+
+|----------------------|
 
