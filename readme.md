@@ -27,10 +27,11 @@ The program has run nearly a year (with PM2) without needing intervention by me.
    - You can also try http://dwelo-hub.local:9001 and see if you can see it there.
 2. Create yourself a user
 3. Install homeassistant (If you have an existing homeassistant, you *should* be able to edit the config/config.js file with that info)
-   1. You may also need to make sure that the `dwelo-shim` port is open to the world
+   1. If trying to use a separate homeassistant server, you may also need to make sure that the `dwelo-shim` port is open to the world
 4. Pull this project
-5. run `node getHassConfigs` to generate you home assistant confgis
-   - Probably only works for switches
+5. run `node getHassConfigs`
+   - It will auto discover your dwelo devices and generate a hass config
+   - Probably only works for switches, locks might work
 6. Put those configs into home assistants and reboot it
 7. Run this project using `pm2 start` or `npm run start`
 8. You should now have home assistant switches that work!
