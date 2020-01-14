@@ -1,5 +1,7 @@
 # Dwelo HASS Shim
 This project connects dwelo (a smarthome platform for apartments) to homeassistant.
+This uses direct access to the dwelo hub and takes miliseconds to execute commands (instead of multiple seconds if you use the online at api.dwelo.com)
+Using this shim with hass/homekit with this shim is *significantly* faster than using the dwelo app or webpage.
 
 # I CAN'T HELP YOU WITH THIS ANYMORE
 I didn't open source this out of fear that dwelo would catch on and remove/change stuff and break me.
@@ -9,8 +11,11 @@ I now don't live in the apartment complex, so I'm open sourcing it now in hopes 
 The point of this project was to
 1. Get the smarthome devices in dwelo connected to homekit
 2. Leave all dwelo things as it, it (dwelo) still needs to work 100% as it originally did
+3. Don't talk to the "Public" dwelo API
+   1. I tried this first and it was extremely slow
+   2. All calls are made locally from HASS, directly to the dwelo-hub and don't require internet access (a network is required, but no internet)
 
-For that reason, instead of hijacking the ZWAVE controller (which is totally possible), I built a shim program that reads data output by dwelo logs and syncs it up to the homeassistant switch. If setting from homeassistant, hass will call the shim program, which will talk to the private dwelo api and trigger that change. I only had switches hooked up. A lock was hooked up at one point in time, but was slow reporting the info/receiving commands and I didn't ever use it, so I didn't care about writing code around that pitfall.
+For that reason (#2), instead of hijacking the ZWAVE controller directly (which is totally possible), I built a shim program that reads data output by dwelo logs and syncs it up to the homeassistant switch. If setting from homeassistant, hass will call the shim program, which will talk to the private dwelo api and trigger that change. I only had switches hooked up. A lock was hooked up at one point in time, but was slow reporting the info/receiving commands and I didn't ever use it, so I didn't care about writing code around that pitfall.
 
 The program has run nearly a year (with PM2) without needing intervention by me. It did need intervention after a power outage.
 
