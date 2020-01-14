@@ -46,11 +46,11 @@ I don't remember 100%, but it went something like this
 Theres quite a bit of python files you can find to reverse engineer the API.
 The stuff that runs on port 9001 is open to the public network and exposes some info
 
-Base: http://192.168.11.27:9001/api/
-Status: http://192.168.11.27:9001/api/controller/status
-Get Devices: http://192.168.11.27:9001/api/devices/
-Lock/unlock local: localhost:5000/device/10/command/door/lock/close/
-Edit name of device: http://192.168.11.27:9001/devices/10/update/
+- Base: http://192.168.11.27:9001/api/
+- Status: http://192.168.11.27:9001/api/controller/status
+- Get Devices: http://192.168.11.27:9001/api/devices/
+- Lock/unlock local: localhost:5000/device/10/command/door/lock/close/
+- Edit name of device: http://192.168.11.27:9001/devices/10/update/
 
 The stuff that runs on port 5000 actually controls the devices and can lock/unlock, turn on/off lights, etc.
 
