@@ -7,6 +7,9 @@ Using this shim with hass/homekit with this shim is *significantly* faster than 
 I didn't open source this out of fear that dwelo would catch on and remove/change stuff and break me.
 I now don't live in the apartment complex, so I'm open sourcing it now in hopes that people can benefit from it.
 
+It also appears that newer Dwelo hardware may not be based off a raspbery pi anymore and so this is likely not very applicable anymore anyway.
+More info here https://github.com/mermaid/dwelo-homeassistant-shim/issues/1
+
 # The Point
 The point of this project was to
 1. Get the smarthome devices in dwelo connected to homekit
